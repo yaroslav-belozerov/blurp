@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvens5iwp37of"]
+
+[ext_resource type="Script" uid="uid://jjv1ev0gcuki" path="res://player.gd" id="1_0f027"]
+[ext_resource type="Texture2D" uid="uid://7uwgkedrqjq4" path="res://icon.png" id="2_2c62f"]
+[ext_resource type="Script" uid="uid://cb3npoeanaw6i" path="res://entities/spawner/enemy_spawner.gd" id="3_gyfs4"]
+[ext_resource type="Shape2D" uid="uid://dj23l78sft1tp" path="res://entities/spawner/rectangle.tres" id="4_d5x1h"]
+[ext_resource type="Script" uid="uid://deslj27b53ai6" path="res://game_over.gd" id="5_8mm7a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3jxj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8mm7a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2c62f")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="MainScene" type="Node"]
+
+[node name="Game" type="Node2D" parent="."]
+
+[node name="Player" type="RigidBody2D" parent="Game" node_paths=PackedStringArray("healthBar", "pointsLabel", "finalPanel", "finalPointsLabel")]
+position = Vector2(560, 266)
+collision_mask = 5
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_0f027")
+maxHealth = 10
+healthBar = NodePath("../../UI/ProgressBar")
+pointsLabel = NodePath("../../UI/Label")
+finalPanel = NodePath("../../GameOver")
+finalPointsLabel = NodePath("../../GameOver/CenterContainer/HighScore")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Player"]
+scale = Vector2(1.2901648, 1.2901648)
+shape = SubResource("RectangleShape2D_o3jxj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Game/Player"]
+scale = Vector2(0.7345511, 0.7345511)
+sprite_frames = SubResource("SpriteFrames_8mm7a")
+
+[node name="Spawner" type="Node2D" parent="Game" node_paths=PackedStringArray("target")]
+position = Vector2(555, 714)
+script = ExtResource("3_gyfs4")
+spawnFreq = 0.5
+target = NodePath("../Player")
+
+[node name="Area2D" type="Area2D" parent="Game/Spawner"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Spawner/Area2D"]
+shape = ExtResource("4_d5x1h")
+disabled = true
+
+[node name="Spawner2" type="Node2D" parent="Game" node_paths=PackedStringArray("target")]
+position = Vector2(555, -67)
+script = ExtResource("3_gyfs4")
+spawnFreq = 0.5
+target = NodePath("../Player")
+
+[node name="Area2D" type="Area2D" parent="Game/Spawner2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Spawner2/Area2D"]
+shape = ExtResource("4_d5x1h")
+disabled = true
+
+[node name="UI" type="VBoxContainer" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="ProgressBar" type="ProgressBar" parent="UI"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="UI"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "0"
+
+[node name="GameOver" type="Panel" parent="."]
+process_mode = 3
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("5_8mm7a")
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighScore" type="Label" parent="GameOver/CenterContainer"]
+layout_mode = 2

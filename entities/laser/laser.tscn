@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnbnv2gn4gbsa"]
+
+[ext_resource type="Script" uid="uid://c6psbibotux3p" path="res://entities/laser/laser.gd" id="1_byvr5"]
+[ext_resource type="Texture2D" uid="uid://7uwgkedrqjq4" path="res://icon.png" id="2_pwb0i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hq1ik"]
+size = Vector2(521, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hq1ik"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_pwb0i")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Laser" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 4
+gravity_scale = 0.0
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_byvr5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(250.5, 0)
+shape = SubResource("RectangleShape2D_hq1ik")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(250.75002, 1.4305115e-06)
+scale = Vector2(8.132813, 0.31250006)
+sprite_frames = SubResource("SpriteFrames_hq1ik")
