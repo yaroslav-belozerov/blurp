@@ -1,10 +1,58 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqta7fbksu01p"]
+[gd_scene load_steps=22 format=3 uid="uid://cqta7fbksu01p"]
 
 [ext_resource type="Script" uid="uid://si2ocxgfmq3c" path="res://entities/enemy/enemy.gd" id="1_im2q6"]
-[ext_resource type="Texture2D" uid="uid://7uwgkedrqjq4" path="res://icon.png" id="2_3fvr7"]
+[ext_resource type="Texture2D" uid="uid://b6u1gxdurv43d" path="res://sprites/enemy.png" id="2_3fvr7"]
+[ext_resource type="Texture2D" uid="uid://dhj0v0dhmmjgr" path="res://sprites/enemy-sheet.png" id="3_dt443"]
+[ext_resource type="AudioStream" uid="uid://o6lkb36tgbap" path="res://resources/sounds/hit.wav" id="4_4wwj3"]
+[ext_resource type="Theme" uid="uid://co0qndm5rw1hu" path="res://misc/theme.tres" id="4_dt443"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dt443"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_dt443"]
+offsets = PackedFloat32Array(0, 0.80442804)
+colors = PackedColorArray(0.8703849, 2.0912812e-05, 1.0203719e-05, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4wwj3"]
+gradient = SubResource("Gradient_dt443")
+fill = 1
+fill_from = Vector2(0.50427353, 0.517094)
+fill_to = Vector2(0.7905983, 0.115384616)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3jxj"]
-size = Vector2(18, 16)
+size = Vector2(18, 12.446041)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wwj3"]
+atlas = ExtResource("3_dt443")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d50e0"]
+atlas = ExtResource("3_dt443")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61ikd"]
+atlas = ExtResource("3_dt443")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_721x4"]
+atlas = ExtResource("3_dt443")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eaj7m"]
+atlas = ExtResource("3_dt443")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8fs5"]
+atlas = ExtResource("3_dt443")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vrfk"]
+atlas = ExtResource("3_dt443")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ohlc"]
+atlas = ExtResource("3_dt443")
+region = Rect2(112, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gyfs4"]
 animations = [{
@@ -15,6 +63,35 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wwj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d50e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61ikd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_721x4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eaj7m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8fs5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vrfk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ohlc")
+}],
+"loop": true,
+"name": &"run",
+"speed": 30.0
 }]
 
 [sub_resource type="Animation" id="Animation_3fvr7"]
@@ -29,7 +106,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [Vector2(3, 3)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -55,13 +132,61 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimatedSprite2D:skew")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimatedSprite2D:offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_im2q6"]
 resource_name = "die"
 length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/path = NodePath("AnimatedSprite2D:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
@@ -69,7 +194,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.19999999),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0.4, 0.4), Vector2(1e-05, 1e-05)]
+"values": [Vector2(3, 3), Vector2(1e-05, 1e-05)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -109,6 +234,54 @@ tracks/3/keys = {
 "update": 1,
 "values": [true, true]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimatedSprite2D:skew")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.5690509975429023]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimatedSprite2D:offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -10)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3fvr7"]
 _data = {
@@ -116,20 +289,55 @@ _data = {
 &"die": SubResource("Animation_im2q6")
 }
 
-[node name="Enemy" type="RigidBody2D" groups=["enemy"]]
-collision_layer = 4
-collision_mask = 4
+[node name="Enemy" type="RigidBody2D" node_paths=PackedStringArray("healthBar") groups=["enemy"]]
+texture_filter = 1
+collision_layer = 36
+collision_mask = 21
 gravity_scale = 0.0
+lock_rotation = true
 script = ExtResource("1_im2q6")
 speed = 410
+healthBar = NodePath("Control/ProgressBar")
+gracePeriod = 0.1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_dt443")
+scale = Vector2(1.9562478, 1.9562478)
+texture = SubResource("GradientTexture2D_4wwj3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.3964458)
+scale = Vector2(2.2764227, 2.4741113)
 shape = SubResource("RectangleShape2D_o3jxj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_gyfs4")
+animation = &"run"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_3fvr7")
 }
+
+[node name="Control" type="Control" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -34.0
+offset_top = -37.000004
+offset_right = 80.0
+offset_bottom = 72.0
+scale = Vector2(0.59297556, 0.59297556)
+theme = ExtResource("4_dt443")
+
+[node name="ProgressBar" type="ProgressBar" parent="Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 10.0
+grow_horizontal = 2
+show_percentage = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_4wwj3")

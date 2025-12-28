@@ -1,53 +1,238 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvens5iwp37of"]
+[gd_scene load_steps=31 format=4 uid="uid://bvens5iwp37of"]
 
 [ext_resource type="Script" uid="uid://jjv1ev0gcuki" path="res://player.gd" id="1_0f027"]
-[ext_resource type="Texture2D" uid="uid://7uwgkedrqjq4" path="res://icon.png" id="2_2c62f"]
+[ext_resource type="Script" uid="uid://cwxyxsi1vyagp" path="res://loop.gd" id="1_66tet"]
+[ext_resource type="TileSet" uid="uid://4kyx1hq6fwo8" path="res://sprites/main_tiles.tres" id="1_nfk4m"]
+[ext_resource type="Texture2D" uid="uid://dqmvsmj7gee0u" path="res://sprites/player.png" id="2_8mm7a"]
 [ext_resource type="Script" uid="uid://cb3npoeanaw6i" path="res://entities/spawner/enemy_spawner.gd" id="3_gyfs4"]
+[ext_resource type="Texture2D" uid="uid://tii75rxdl6xc" path="res://sprites/player-sheet.png" id="3_hq1ik"]
 [ext_resource type="Shape2D" uid="uid://dj23l78sft1tp" path="res://entities/spawner/rectangle.tres" id="4_d5x1h"]
-[ext_resource type="Script" uid="uid://deslj27b53ai6" path="res://game_over.gd" id="5_8mm7a"]
+[ext_resource type="AudioStream" uid="uid://be62k28tp5e45" path="res://resources/sounds/player_hit.wav" id="6_671wp"]
+[ext_resource type="LabelSettings" uid="uid://djiyy5wextjm6" path="res://misc/label.tres" id="8_66tet"]
+[ext_resource type="Theme" uid="uid://co0qndm5rw1hu" path="res://misc/theme.tres" id="8_qwutr"]
+[ext_resource type="LabelSettings" uid="uid://mh73orhdxcvs" path="res://misc/label_small.tres" id="9_7ycvg"]
+[ext_resource type="LabelSettings" uid="uid://w142l47ixj5q" path="res://misc/label_big.tres" id="9_wr18j"]
+[ext_resource type="FontFile" uid="uid://btiei7fseygil" path="res://resources/fonts/tiny5.ttf" id="10_mo76n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3jxj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfk4m"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66tet"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ycvg"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wr18j"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwutr"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_671wp"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mo76n"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42l1d"]
+atlas = ExtResource("3_hq1ik")
+region = Rect2(112, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8mm7a"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_2c62f")
+"texture": ExtResource("2_8mm7a")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfk4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66tet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ycvg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wr18j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwutr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_671wp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mo76n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_42l1d")
+}],
+"loop": true,
+"name": &"run",
+"speed": 30.0
 }]
 
-[node name="MainScene" type="Node"]
+[sub_resource type="Gradient" id="Gradient_qwutr"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_671wp"]
+gradient = SubResource("Gradient_qwutr")
+fill = 1
+fill_from = Vector2(0.502, 0.503)
+fill_to = Vector2(0.75213677, 0.86752135)
+
+[sub_resource type="Animation" id="Animation_qwutr"]
+resource_name = "damage"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 0.2, 0.2, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_671wp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mo76n"]
+_data = {
+&"RESET": SubResource("Animation_671wp"),
+&"damage": SubResource("Animation_qwutr")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_42l1d"]
+font = ExtResource("10_mo76n")
+font_size = 36
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.3137255)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwutr"]
+bg_color = Color(1, 0.8000001, 0, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("player", "pauseMenu", "gameOverMenu", "difficultyProgress")]
+process_mode = 3
+script = ExtResource("1_66tet")
+player = NodePath("Game/Player")
+pauseMenu = NodePath("GUI/Control/Pause")
+gameOverMenu = NodePath("GUI/Control/GameOver")
+difficultyProgress = NodePath("GUI/Control/UI/VBoxContainer2/ProgressBar")
 
 [node name="Game" type="Node2D" parent="."]
+process_mode = 1
+texture_filter = 1
 
-[node name="Player" type="RigidBody2D" parent="Game" node_paths=PackedStringArray("healthBar", "pointsLabel", "finalPanel", "finalPointsLabel")]
+[node name="ColorRect" type="ColorRect" parent="Game"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -177.78864
+offset_top = -433.0
+offset_right = -110.84013
+offset_bottom = -315.5019
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(21.222115, 11.438485)
+color = Color(0.25882354, 0.6431373, 0.34901962, 1)
+
+[node name="WorldTiles" type="TileMapLayer" parent="Game"]
+texture_filter = 1
+position = Vector2(559, 267)
+scale = Vector2(2.9430957, 2.9430957)
+tile_map_data = PackedByteArray("AADz//v/AAABAAAAAADz//z/AAABAAAAAADz//3/AAABAAAAAADz//7/AAABAAAAAADz////AAABAAAAAADz/wAAAAABAAAAAADz/wEAAAABAAAAAADz/wIAAAABAAAAAADz/wMAAAABAAAAAADz/wQAAAABAAAAAAD1//r/AAACAAAAAAD1//3/AAAAAAAAAAD1//7/AAAAAAAAAAD1////AAAAAAAAAAD1/wAAAAAAAAAAAAD1/wEAAAAAAAAAAAD1/wIAAAAAAAAAAAD1/wMAAAAAAAAAAAD2//j/AAACAAAAAAD2//r/AAACAAAAAAD2//3/AAAAAAAAAAD2/wMAAAAAAAAAAAD2/wUAAAACAAAAAAD2/wYAAAACAAAAAAD3//b/AAACAAAAAAD3//f/AAACAAAAAAD3//j/AAACAAAAAAD3//n/AAACAAAAAAD3//r/AAACAAAAAAD3/wUAAAACAAAAAAD3/wYAAAACAAAAAAD3/wcAAAACAAAAAAD4//X/AAACAAAAAAD4//b/AAACAAAAAAD4//f/AAACAAAAAAD4//j/AAACAAAAAAD4//n/AAACAAAAAAD4//r/AAACAAAAAAD4/wQAAAACAAAAAAD4/wcAAAACAAAAAAD4/wgAAAACAAAAAAD5//X/AAACAAAAAAD5//f/AAACAAAAAAD5//r/AAACAAAAAAD5////AAABAAAAAAD5/wAAAAABAAAAAAD5/wQAAAACAAAAAAD5/wYAAAACAAAAAAD5/wcAAAACAAAAAAD5/wkAAAACAAAAAAD6//X/AAACAAAAAAD6//b/AAACAAAAAAD6//r/AAACAAAAAAD6////AAABAAAAAAD6/wAAAAABAAAAAAD6/wQAAAACAAAAAAD6/wUAAAACAAAAAAD6/wYAAAACAAAAAAD6/wkAAAACAAAAAAD7//X/AAACAAAAAAD7//b/AAACAAAAAAD7//f/AAACAAAAAAD7//j/AAACAAAAAAD7//r/AAACAAAAAAD7/wcAAAACAAAAAAD7/wgAAAACAAAAAAD7/wkAAAACAAAAAAD8//T/AAACAAAAAAD8//X/AAACAAAAAAD8//r/AAACAAAAAAD9//T/AAACAAAAAAD9//b/AAACAAAAAAD9//n/AAACAAAAAAD9//r/AAACAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD9/wMAAAAAAAAAAAD9/wYAAAACAAAAAAD9/wcAAAACAAAAAAD+//f/AAACAAAAAAD+//j/AAACAAAAAAD+//n/AAACAAAAAAD+//v/AAACAAAAAAD+//3/AAAAAAAAAAD+/wMAAAAAAAAAAAD+/wYAAAACAAAAAAD+/wcAAAACAAAAAAD+/wkAAAACAAAAAAD+/woAAAACAAAAAAD///f/AAACAAAAAAD///j/AAACAAAAAAD///n/AAACAAAAAAD///r/AAACAAAAAAD///v/AAACAAAAAAD///3/AAAAAAAAAAD//wMAAAAAAAAAAAD//wUAAAACAAAAAAD//woAAAACAAAAAAAAAPX/AAACAAAAAAAAAPf/AAACAAAAAAAAAPj/AAACAAAAAAAAAPr/AAACAAAAAAAAAPv/AAACAAAAAAAAAP3/AAAAAAAAAAAAAAMAAAAAAAAAAAAAAAUAAAACAAAAAAAAAAoAAAACAAAAAAABAPT/AAACAAAAAAABAPX/AAACAAAAAAABAPf/AAACAAAAAAABAPj/AAACAAAAAAABAPr/AAACAAAAAAABAPv/AAACAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAUAAAACAAAAAAABAAkAAAACAAAAAAABAAoAAAACAAAAAAACAPT/AAACAAAAAAACAPX/AAACAAAAAAACAPj/AAACAAAAAAACAPn/AAACAAAAAAACAPr/AAACAAAAAAACAPv/AAACAAAAAAACAAUAAAACAAAAAAACAAoAAAACAAAAAAADAPT/AAACAAAAAAADAPj/AAACAAAAAAADAPn/AAACAAAAAAADAPv/AAACAAAAAAADAAYAAAACAAAAAAADAAcAAAACAAAAAAADAAgAAAACAAAAAAADAAkAAAACAAAAAAADAAoAAAACAAAAAAAEAPT/AAACAAAAAAAEAPb/AAACAAAAAAAEAPj/AAACAAAAAAAEAPv/AAACAAAAAAAEAP//AAABAAAAAAAEAAAAAAABAAAAAAAEAAYAAAACAAAAAAAEAAcAAAACAAAAAAAEAAkAAAACAAAAAAAFAPP/AAACAAAAAAAFAPT/AAACAAAAAAAFAPX/AAACAAAAAAAFAPb/AAACAAAAAAAFAPj/AAACAAAAAAAFAPv/AAACAAAAAAAFAP//AAABAAAAAAAFAAAAAAABAAAAAAAFAAUAAAACAAAAAAAFAAgAAAACAAAAAAAFAAkAAAACAAAAAAAGAPP/AAACAAAAAAAGAPT/AAACAAAAAAAGAPX/AAACAAAAAAAGAPb/AAACAAAAAAAGAPj/AAACAAAAAAAGAPv/AAACAAAAAAAGAAUAAAACAAAAAAAGAAYAAAACAAAAAAAGAAgAAAACAAAAAAAHAPX/AAACAAAAAAAHAPb/AAACAAAAAAAHAPf/AAACAAAAAAAHAPn/AAACAAAAAAAHAPr/AAACAAAAAAAHAAUAAAACAAAAAAAHAAcAAAACAAAAAAAIAPr/AAACAAAAAAAIAP3/AAAAAAAAAAAIAAMAAAAAAAAAAAAIAAUAAAACAAAAAAAJAP3/AAAAAAAAAAAJAP7/AAAAAAAAAAAJAP//AAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAUAAAACAAAAAAALAPf/AAACAAAAAAALAPj/AAACAAAAAAALAPv/AAABAAAAAAALAPz/AAABAAAAAAALAP3/AAABAAAAAAALAP7/AAABAAAAAAALAP//AAABAAAAAAALAAAAAAABAAAAAAALAAEAAAABAAAAAAALAAIAAAABAAAAAAALAAMAAAABAAAAAAALAAQAAAABAAAAAADw/w0AAAADAAAAAADw//D/AAADAAAAAADw//H/AAADAAAAAADw//L/AAADAAAAAADw//P/AAADAAAAAADw//T/AAADAAAAAADw//X/AAADAAAAAADw//b/AAADAAAAAADw//f/AAADAAAAAADw//j/AAADAAAAAADw//n/AAADAAAAAADw//r/AAADAAAAAADw//v/AAADAAAAAADw//z/AAADAAAAAADw//3/AAADAAAAAADw//7/AAADAAAAAADw////AAADAAAAAADw/wAAAAADAAAAAADw/wEAAAADAAAAAADw/wIAAAADAAAAAADw/wMAAAADAAAAAADw/wQAAAADAAAAAADw/wUAAAADAAAAAADw/wYAAAADAAAAAADw/wcAAAADAAAAAADw/wgAAAADAAAAAADw/wkAAAADAAAAAADw/woAAAADAAAAAADw/wsAAAADAAAAAADw/wwAAAADAAAAAADx/w0AAAADAAAAAADy/w0AAAADAAAAAADz/w0AAAADAAAAAAD0/w0AAAADAAAAAAD1/w0AAAADAAAAAAD2/w0AAAADAAAAAAD3/w0AAAADAAAAAAD4/w0AAAADAAAAAAD5/w0AAAADAAAAAAD6/w0AAAADAAAAAAD7/w0AAAADAAAAAAD8/w0AAAADAAAAAAD9/w0AAAADAAAAAAD+/w0AAAADAAAAAAD//w0AAAADAAAAAAAAAA0AAAADAAAAAAABAA0AAAADAAAAAAACAA0AAAADAAAAAAADAA0AAAADAAAAAAAEAA0AAAADAAAAAAAFAA0AAAADAAAAAAAGAA0AAAADAAAAAAAHAA0AAAADAAAAAAAIAA0AAAADAAAAAAAJAA0AAAADAAAAAAAKAA0AAAADAAAAAAALAA0AAAADAAAAAAAMAA0AAAADAAAAAAANAA0AAAADAAAAAAAOAA0AAAADAAAAAAAOAPD/AAADAAAAAAAOAPH/AAADAAAAAAAOAPL/AAADAAAAAAAOAPP/AAADAAAAAAAOAPT/AAADAAAAAAAOAPX/AAADAAAAAAAOAPb/AAADAAAAAAAOAPf/AAADAAAAAAAOAPj/AAADAAAAAAAOAPn/AAADAAAAAAAOAPr/AAADAAAAAAAOAPv/AAADAAAAAAAOAPz/AAADAAAAAAAOAP3/AAADAAAAAAAOAP7/AAADAAAAAAAOAP//AAADAAAAAAAOAAAAAAADAAAAAAAOAAEAAAADAAAAAAAOAAIAAAADAAAAAAAOAAMAAAADAAAAAAAOAAQAAAADAAAAAAAOAAUAAAADAAAAAAAOAAYAAAADAAAAAAAOAAcAAAADAAAAAAAOAAgAAAADAAAAAAAOAAkAAAADAAAAAAAOAAoAAAADAAAAAAAOAAsAAAADAAAAAAAOAAwAAAADAAAAAADx//D/AAADAAAAAADy//D/AAADAAAAAADz//D/AAADAAAAAAD0//D/AAADAAAAAAD1//D/AAADAAAAAAD2//D/AAADAAAAAAD3//D/AAADAAAAAAD4//D/AAADAAAAAAD5//D/AAADAAAAAAD6//D/AAADAAAAAAD7//D/AAADAAAAAAD8//D/AAADAAAAAAD9//D/AAADAAAAAAD+//D/AAADAAAAAAD///D/AAADAAAAAAAAAPD/AAADAAAAAAABAPD/AAADAAAAAAACAPD/AAADAAAAAAADAPD/AAADAAAAAAAEAPD/AAADAAAAAAAFAPD/AAADAAAAAAAGAPD/AAADAAAAAAAHAPD/AAADAAAAAAAIAPD/AAADAAAAAAAJAPD/AAADAAAAAAAKAPD/AAADAAAAAAALAPD/AAADAAAAAAAMAPD/AAADAAAAAAANAPD/AAADAAAAAAA=")
+tile_set = ExtResource("1_nfk4m")
+
+[node name="Player" type="RigidBody2D" parent="Game" node_paths=PackedStringArray("healthBar", "energyBar", "pointsLabel", "finalPanel", "finalPointsLabel")]
 position = Vector2(560, 266)
-collision_mask = 5
+collision_mask = 21
 gravity_scale = 0.0
 lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_0f027")
 maxHealth = 10
-healthBar = NodePath("../../UI/ProgressBar")
-pointsLabel = NodePath("../../UI/Label")
-finalPanel = NodePath("../../GameOver")
-finalPointsLabel = NodePath("../../GameOver/CenterContainer/HighScore")
+healthBar = NodePath("../../GUI/Control/UI/VBoxContainer/PlayerHealthBar")
+energyBar = NodePath("../../GUI/Control/UI/VBoxContainer/ChargeBar")
+pointsLabel = NodePath("../../GUI/Control/UI/VBoxContainer/ScoreLabel")
+finalPanel = NodePath("../../GUI/Control/GameOver")
+finalPointsLabel = NodePath("../../GUI/Control/GameOver/VBoxContainer/HighScore")
+gracePeriod = 0.5
+maxEnergy = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Player"]
 scale = Vector2(1.2901648, 1.2901648)
 shape = SubResource("RectangleShape2D_o3jxj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Game/Player"]
-scale = Vector2(0.7345511, 0.7345511)
+scale = Vector2(2.863491, 2.863491)
 sprite_frames = SubResource("SpriteFrames_8mm7a")
+animation = &"run"
 
-[node name="Spawner" type="Node2D" parent="Game" node_paths=PackedStringArray("target")]
-position = Vector2(555, 714)
+[node name="Camera2D" type="Camera2D" parent="Game/Player"]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Game/Player"]
+visible = false
+scale = Vector2(4.7459555, 4.7459555)
+energy = 0.3
+texture = SubResource("GradientTexture2D_671wp")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Game/Player"]
+libraries = {
+&"": SubResource("AnimationLibrary_mo76n")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Game/Player"]
+stream = ExtResource("6_671wp")
+volume_db = -7.704
+
+[node name="Spawner" type="Node2D" parent="Game" node_paths=PackedStringArray("target", "tiles", "loop")]
+position = Vector2(1111, 219)
 script = ExtResource("3_gyfs4")
-spawnFreq = 0.5
 target = NodePath("../Player")
+tiles = NodePath("../WorldTiles")
+loop = NodePath("../..")
 
 [node name="Area2D" type="Area2D" parent="Game/Spawner"]
 
@@ -55,11 +240,12 @@ target = NodePath("../Player")
 shape = ExtResource("4_d5x1h")
 disabled = true
 
-[node name="Spawner2" type="Node2D" parent="Game" node_paths=PackedStringArray("target")]
-position = Vector2(555, -67)
+[node name="Spawner2" type="Node2D" parent="Game" node_paths=PackedStringArray("target", "tiles", "loop")]
+position = Vector2(-40, 234)
 script = ExtResource("3_gyfs4")
-spawnFreq = 0.5
 target = NodePath("../Player")
+tiles = NodePath("../WorldTiles")
+loop = NodePath("../..")
 
 [node name="Area2D" type="Area2D" parent="Game/Spawner2"]
 
@@ -67,32 +253,109 @@ target = NodePath("../Player")
 shape = ExtResource("4_d5x1h")
 disabled = true
 
-[node name="UI" type="VBoxContainer" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="ProgressBar" type="ProgressBar" parent="UI"]
-custom_minimum_size = Vector2(200, 40)
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Label" type="Label" parent="UI"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "0"
-
-[node name="GameOver" type="Panel" parent="."]
-process_mode = 3
-visible = false
+[node name="Control" type="Control" parent="GUI"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
-script = ExtResource("5_8mm7a")
+theme = ExtResource("8_qwutr")
 
-[node name="CenterContainer" type="CenterContainer" parent="GameOver"]
+[node name="UI" type="VBoxContainer" parent="GUI/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 500.0
+offset_bottom = -24.0
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="GUI/Control/UI"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/Control/UI/VBoxContainer2"]
+layout_mode = 2
+text = "Difficulty:"
+label_settings = SubResource("LabelSettings_42l1d")
+
+[node name="ProgressBar" type="ProgressBar" parent="GUI/Control/UI/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+show_percentage = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Control/UI"]
+layout_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="GUI/Control/UI/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "0"
+label_settings = ExtResource("9_wr18j")
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="GUI/Control/UI/VBoxContainer"]
+custom_minimum_size = Vector2(500, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+show_percentage = false
+
+[node name="ChargeBar" type="ProgressBar" parent="GUI/Control/UI/VBoxContainer"]
+custom_minimum_size = Vector2(500, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_qwutr")
+show_percentage = false
+
+[node name="GameOver" type="Panel" parent="GUI/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Control/GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_right = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="GUI/Control/GameOver/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 52
+text = "high score"
+label_settings = ExtResource("8_66tet")
+
+[node name="HighScore" type="Label" parent="GUI/Control/GameOver/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 52
+label_settings = ExtResource("9_wr18j")
+
+[node name="PressRToRestart" type="Label" parent="GUI/Control/GameOver/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "[ R ] to restart"
+label_settings = ExtResource("9_7ycvg")
+
+[node name="Pause" type="Panel" parent="GUI/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,5 +363,40 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HighScore" type="Label" parent="GameOver/CenterContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/Control/Pause"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/Control/Pause/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PausedLabel" type="Label" parent="GUI/Control/Pause/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "PAUSED"
+label_settings = ExtResource("8_66tet")
+
+[node name="PausedLabel2" type="Label" parent="GUI/Control/Pause/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "[Esc] to resume
+[R] to restart"
+label_settings = ExtResource("9_7ycvg")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="GUI/Control/Pause/HBoxContainer"]
+layout_mode = 2
+
+[node name="PausedLabel2" type="Label" parent="GUI/Control/Pause/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "[LMB] to shoot
+[RMB] to dash
+[Space] to throw a bomb"
+label_settings = ExtResource("9_7ycvg")
+horizontal_alignment = 2
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.97, 1, 0.9705, 1)

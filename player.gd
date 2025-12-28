@@ -4,25 +4,41 @@ extends RigidBody2D
 @export var dashLength = 500
 @export var maxHealth = 100
 @export var healthBar: ProgressBar
+@export var energyBar: ProgressBar
 @export var pointsLabel: Label
 @export var finalPanel: Panel
 @export var finalPointsLabel: Label
 @export var gracePeriod = 0.1
-var gracePeriodLeft = 1
+@export var pointsPerEnemy = 100
+@export var maxEnergy: int
+var gracePeriodLeft = 0
 var laser = preload("res://entities/laser/laser.tscn")
+var bomb = preload("res://entities/bomb/bomb.tscn")
+var hurtSound = preload("res://resources/sounds/player_hit.wav")
 var laserInstance: Node2D
 var dashProgress = 0
-var health: int
 var vel = Vector2.ZERO
 var points = 0
 var isDead = false
+var health: float
+var energy: int
+
+func updatePoints(points: int):
+	pointsLabel.text = str(points)
+
+func getTween() -> Tween:
+	var tween = create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.set_trans(Tween.TRANS_EXPO)
+	return tween
 
 func _ready() -> void:
+	energy = maxEnergy
 	health = maxHealth
+	healthBar.value = 100
 
 func _process(delta: float) -> void:
-	healthBar.value = float(health) / maxHealth * 100
-	pointsLabel.text = str(points)
+	energyBar.value = float(energy) / maxEnergy * 100
 	
 	if health <= 0:
 		isDead = true
@@ -33,11 +49,17 @@ func _process(delta: float) -> void:
 		finalPointsLabel.text = str(points)
 		return
 	
-	if Input.is_action_just_pressed("shoot"):
-		shoot(get_node("."))
+	if Input.is_action_just_pressed("bomb") && energy == maxEnergy:
+		energy = 0
+		var inst = bomb.instantiate()
+		inst.init(position, position.direction_to(get_global_mouse_position()), hitEnemy)
+		add_sibling(inst)
+		
 	if Input.is_action_just_released("shoot"):
 		if laserInstance:
-			laserInstance.free()
+			laserInstance.destroy()
+	if Input.is_action_just_pressed("shoot"):
+		shoot(get_node("."))
 			
 	gracePeriodLeft -= delta
 	
@@ -61,19 +83,34 @@ func _physics_process(delta):
 		vel.x += 1
 	if Input.is_action_pressed("move_left"):
 		vel.x -= 1
-	vel = vel.normalized() * speed
 	
-	var body = move_and_collide((vel*delta).lerp((vel*delta*dashLength)*delta, dashProgress))
-	if body:
-		var collider = body.get_collider()
-		if collider.is_in_group("enemy") and collider.has_method("kill"):
-			collider.kill()
-			if gracePeriodLeft <= 0:
-				health -= 1
-				gracePeriodLeft = gracePeriod
+	if gracePeriodLeft > 0:
+		$AnimationPlayer.play("damage")
+	else:
+		$AnimationPlayer.play("RESET")
+	if vel.length() > 0:
+		$AnimatedSprite2D.flip_h = vel.x < 0
+		$AnimatedSprite2D.play("run")
+	else:
+		$AnimatedSprite2D.play("default")	
+	
+	vel = vel.normalized() * speed
+	var collision = move_and_collide((vel*delta).lerp((vel*delta*dashLength)*delta, dashProgress))
+	for body in get_colliding_bodies() + ([collision.get_collider()] if collision else []):
+		if body && body.has_method("is_in_group") && body.is_in_group("enemy"):
+			damage()
+
+func damage() -> void:
+	if gracePeriodLeft <= 0 && dashProgress <= 0:
+		$AudioStreamPlayer2D.playing = true
+		health -= 1
+		gracePeriodLeft = gracePeriod
+		getTween().tween_property(healthBar, "value", health / maxHealth * 100, 0.2)
 
 func hitEnemy() -> void:
-	points += 100
+	getTween().tween_method(updatePoints, points, points + pointsPerEnemy, 0.2)
+	points += pointsPerEnemy
+	energy = min(energy + 1, maxEnergy)
 
 func shoot(andFollow: Node2D) -> void:
 	laserInstance = laser.instantiate()

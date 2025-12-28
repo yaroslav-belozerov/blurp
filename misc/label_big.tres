@@ -1,0 +1,11 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://w142l47ixj5q"]
+
+[ext_resource type="FontFile" uid="uid://btiei7fseygil" path="res://resources/fonts/tiny5.ttf" id="1_4oryb"]
+
+[resource]
+font = ExtResource("1_4oryb")
+font_size = 96
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.3137255)

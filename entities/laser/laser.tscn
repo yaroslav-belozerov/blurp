@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnbnv2gn4gbsa"]
+[gd_scene load_steps=11 format=3 uid="uid://dnbnv2gn4gbsa"]
 
 [ext_resource type="Script" uid="uid://c6psbibotux3p" path="res://entities/laser/laser.gd" id="1_byvr5"]
+[ext_resource type="Shader" uid="uid://dhyybabjleukg" path="res://entities/laser/laser.gdshader" id="2_oukfv"]
 [ext_resource type="Texture2D" uid="uid://7uwgkedrqjq4" path="res://icon.png" id="2_pwb0i"]
+[ext_resource type="Texture2D" uid="uid://b61w03s1lfq84" path="res://sprites/light.png" id="4_wvd4t"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hq1ik"]
-size = Vector2(521, 20)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oukfv"]
+shader = ExtResource("2_oukfv")
+shader_parameter/opacity = 0.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hq1ik"]
 animations = [{
@@ -17,6 +20,168 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_wvd4t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("AnimatedSprite2D:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("AnimatedSprite2D:offset:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [35.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:material:shader_parameter/opacity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_2u6f6"]
+resource_name = "end_shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("AnimatedSprite2D:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [5.867, 0.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.19999999),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("AnimatedSprite2D:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [35.0, 150.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:material:shader_parameter/opacity")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D:energy")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 0.15932007),
+"update": 0,
+"values": [0.6, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_oukfv"]
+resource_name = "start_shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("AnimatedSprite2D:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 5.867]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:material:shader_parameter/opacity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 5.656855),
+"update": 0,
+"values": [0.0, 0.6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wvd4t"]
+_data = {
+&"RESET": SubResource("Animation_wvd4t"),
+&"end_shoot": SubResource("Animation_2u6f6"),
+&"start_shoot": SubResource("Animation_oukfv")
+}
+
 [node name="Laser" type="RigidBody2D"]
 collision_layer = 0
 collision_mask = 4
@@ -27,11 +192,26 @@ contact_monitor = true
 max_contacts_reported = 1
 script = ExtResource("1_byvr5")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(250.5, 0)
-shape = SubResource("RectangleShape2D_hq1ik")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(250.75002, 1.4305115e-06)
-scale = Vector2(8.132813, 0.31250006)
+z_index = 1
+material = SubResource("ShaderMaterial_oukfv")
+position = Vector2(6.144798, 0)
+scale = Vector2(3.8187342, 3.5937498)
 sprite_frames = SubResource("SpriteFrames_hq1ik")
+offset = Vector2(35, 0)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-1, 1, 272, -146, 274, 158)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wvd4t")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+z_index = 2
+position = Vector2(160.5, 3)
+scale = Vector2(0.6425781, 0.7401569)
+color = Color(0.8358334, 0.85, 0, 1)
+energy = 0.0
+texture = ExtResource("4_wvd4t")
