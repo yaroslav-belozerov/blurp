@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="blurp"
-run/main_scene="uid://bvens5iwp37of"
+run/main_scene="uid://coq2xxthnodhv"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false

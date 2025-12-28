@@ -21,7 +21,7 @@ var vel = Vector2.ZERO
 var points = 0
 var isDead = false
 var health: float
-var energy: int
+var energy = 0
 
 func updatePoints(points: int):
 	pointsLabel.text = str(points)
@@ -32,19 +32,33 @@ func getTween() -> Tween:
 	tween.set_trans(Tween.TRANS_EXPO)
 	return tween
 
-func _ready() -> void:
-	energy = maxEnergy
+func _ready() -> void:		
 	health = maxHealth
 	healthBar.value = 100
+
+func savePoints() -> void:
+	var read_save_file = FileAccess.open("user://blurp.save", FileAccess.READ)
+	var highScore = 0
+	if read_save_file:
+		var line = read_save_file.get_line()
+		var json = JSON.new()
+		var parsed = json.parse(line)
+		if parsed == OK:
+			highScore = int(json.data["highScore"])
+	if highScore < points:
+		var save_file = FileAccess.open("user://blurp.save", FileAccess.WRITE)
+		var save_str = JSON.stringify({"highScore": points})
+		save_file.store_line(save_str)
 
 func _process(delta: float) -> void:
 	energyBar.value = float(energy) / maxEnergy * 100
 	
 	if health <= 0:
+		if !isDead:
+			savePoints()
 		isDead = true
 		
 	if isDead:
-		get_tree().paused = true
 		finalPanel.visible = true
 		finalPointsLabel.text = str(points)
 		return
@@ -102,6 +116,9 @@ func _physics_process(delta):
 
 func damage() -> void:
 	if gracePeriodLeft <= 0 && dashProgress <= 0:
+		var cam = get_viewport().get_camera_2d()
+		if cam && cam.has_method("shake"):
+			cam.shake(10.0)
 		$AudioStreamPlayer2D.playing = true
 		health -= 1
 		gracePeriodLeft = gracePeriod

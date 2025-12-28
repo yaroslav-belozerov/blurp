@@ -39,17 +39,14 @@ func kill(onDead: Callable, damage: int) -> void:
 	if gracePeriodLeft <= 0:
 		health -= damage
 		gracePeriodLeft = gracePeriod
-	if health <= 0:
-		if onDead:
-			onDead.call()
-		die()
+		if health <= 0:
+			if onDead:
+				onDead.call()
+			die()
 
 func die() -> void:
 	$AnimationPlayer.play("die")
 	$AnimatedSprite2D.play("default")
-	
-func destroy() -> void:
-	queue_free()
 
 func init(follow: Node2D, tileMapLayer: TileMapLayer) -> void:
 	direction = follow

@@ -17,12 +17,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	difficultyProgress.value = (difficulty - initialDifficulty) / maxDifficulty * 100
 	gameOverMenu.visible = player.isDead
-	pauseMenu.visible = isPaused
-	get_tree().paused = isPaused
+	pauseMenu.visible = isPaused && !player.isDead
+	get_tree().paused = isPaused || player.isDead
 	if difficulty < maxDifficulty:
 		difficulty += difficultyStep * delta
 		
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
 	if Input.is_action_just_pressed("pause"):
-		isPaused = !isPaused
+		if player.isDead:
+			player.savePoints()
+			get_tree().change_scene_to_file("res://main_menu.tscn")
+		else:
+			isPaused = !isPaused

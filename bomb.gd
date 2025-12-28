@@ -18,6 +18,10 @@ func init(pos: Vector2, dir: Vector2, onHit: Callable) -> void:
 func _physics_process(delta):
 	position += direction * delta * speed
 
+func die():
+	var cam = get_viewport().get_camera_2d()
+	if cam && cam.has_method("shake"):
+		cam.shake(30.0)
 
 func _on_body_entered(body: Node) -> void:
 	if body.has_method("local_to_map"):

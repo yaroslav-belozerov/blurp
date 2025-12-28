@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtl4eg6bdvk8r"]
+
+[ext_resource type="LabelSettings" uid="uid://w142l47ixj5q" path="res://misc/label_big.tres" id="1_06t4h"]
+[ext_resource type="Theme" uid="uid://co0qndm5rw1hu" path="res://misc/theme.tres" id="1_7vrkn"]
+[ext_resource type="Script" uid="uid://bgkocgg644mk" path="res://main_menu.gd" id="2_jix8l"]
+[ext_resource type="Texture2D" uid="uid://dqmvsmj7gee0u" path="res://sprites/player.png" id="3_fu7sn"]
+[ext_resource type="LabelSettings" uid="uid://mh73orhdxcvs" path="res://misc/label_small.tres" id="5_glbon"]
+
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("playButton", "highScoreLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7vrkn")
+script = ExtResource("2_jix8l")
+playButton = NodePath("VBoxContainer/Button")
+highScoreLabel = NodePath("VBoxContainer/VBoxContainer/HBoxContainer2/Label2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.19607843, 0.4509804, 0.27058825, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("3_fu7sn")
+expand_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "blurp"
+label_settings = ExtResource("1_06t4h")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "high score: "
+label_settings = ExtResource("5_glbon")
+
+[node name="Label2" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("5_glbon")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(250, 80)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "PLAY"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
